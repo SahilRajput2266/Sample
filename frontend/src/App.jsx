@@ -33,6 +33,7 @@ import AIToolsDashboard from './pages/AIToolsDashboard';
 import AIToolPage from './pages/AIToolPage';
 import GeneratedDocuments from './pages/GeneratedDocuments';
 import GeneratedDocumentDetail from './pages/GeneratedDocumentDetail';
+import NotFound from './pages/NotFound';
 
 function App() {
   return (
@@ -83,6 +84,8 @@ function App() {
             <Route path="/admin/users" element={<UsersList />} />
             <Route path="/admin/users/:id" element={<UserEdit />} />
           </Route>
+
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

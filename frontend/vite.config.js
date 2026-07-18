@@ -13,14 +13,15 @@ export default defineConfig({
       manifest: {
         name: 'JobOrbit',
         short_name: 'JobOrbit',
-        description: 'AI-powered Job Search & Application Automation platform',
-        theme_color: '#ffffff',
+        description: 'Organize your professional profile, job search, and applications.',
+        theme_color: '#4f46e5',
+        background_color: '#f8fafc',
+        display: 'standalone',
+        start_url: '/',
         icons: [
-          {
-            src: 'favicon.svg',
-            sizes: 'any',
-            type: 'image/svg+xml'
-          }
+          { src: 'pwa-192x192.png', sizes: '192x192', type: 'image/png' },
+          { src: 'pwa-512x512.png', sizes: '512x512', type: 'image/png' },
+          { src: 'pwa-maskable-512x512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
         ]
       }
     })

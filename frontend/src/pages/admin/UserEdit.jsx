@@ -49,18 +49,20 @@ const UserEdit = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
     setIsSubmitting(true);
     try {
       await axios.put(`/admin/users/${id}`, formData);
       navigate('/admin/users');
     } catch (err) {
       setError(err.response?.data?.message || 'Error updating user');
+    } finally {
       setIsSubmitting(false);
     }
   };
 
   if (loading) return <Layout><div className="p-8 text-center">Loading user details...</div></Layout>;
-  if (error) return <Layout><div className="p-8 text-red-500 text-center">{error}</div></Layout>;
+
 
   return (
     <Layout>
@@ -77,6 +79,9 @@ const UserEdit = () => {
 
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
           <form onSubmit={handleSubmit} className="space-y-6">
+            {error && (
+              <div className="alert-error" role="alert">{error}</div>
+            )}
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
               <div>
                 <label className="block text-sm font-medium text-gray-700">Full Name</label>
