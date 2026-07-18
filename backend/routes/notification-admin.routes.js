@@ -1,0 +1,1 @@
+import express from'express';import{admin}from'../middleware/auth.js';import*as c from'../controllers/notification-admin.controller.js';const r=express.Router();r.use(admin);r.get('/stats',c.stats);r.get('/deliveries',c.deliveries);r.get('/scheduler',c.scheduler);r.post('/deliveries/:id/retry',c.retry);r.post('/tasks/:id/cancel',c.cancel);export default r;

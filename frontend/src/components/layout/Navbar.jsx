@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { LogOut, Menu } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import NotificationBell from '../notifications/NotificationBell';
 
 const Navbar = ({ toggleSidebar }) => {
   const { user, logout } = useContext(AuthContext);
@@ -22,6 +23,7 @@ const Navbar = ({ toggleSidebar }) => {
       </div>
       
       <div className="flex items-center gap-4">
+        {user?.role === 'user' && <NotificationBell />}
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold">
             {user?.fullName?.charAt(0).toUpperCase()}

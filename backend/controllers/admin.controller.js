@@ -25,6 +25,12 @@ import AutomationStep from '../models/AutomationStep.js';
 import AutomationAnswer from '../models/AutomationAnswer.js';
 import AutomationScreenshot from '../models/AutomationScreenshot.js';
 import AutomationConsent from '../models/AutomationConsent.js';
+import Notification from '../models/Notification.js';
+import NotificationPreference from '../models/NotificationPreference.js';
+import NotificationDelivery from '../models/NotificationDelivery.js';
+import PushSubscription from '../models/PushSubscription.js';
+import ScheduledTask from '../models/ScheduledTask.js';
+import DigestRun from '../models/DigestRun.js';
 import { normalizeEmail, emailLookupFilter } from '../utils/email.js';
 
 // True when `user` is the only remaining active admin account.
@@ -252,6 +258,12 @@ export const deleteUser = async (req, res, next) => {
         AutomationAnswer.deleteMany({ userId: user._id }),
         AutomationScreenshot.deleteMany({ userId: user._id }),
         AutomationConsent.deleteMany({ userId: user._id }),
+        Notification.deleteMany({ userId: user._id }),
+        NotificationPreference.deleteMany({ userId: user._id }),
+        NotificationDelivery.deleteMany({ userId: user._id }),
+        PushSubscription.deleteMany({ userId: user._id }),
+        ScheduledTask.deleteMany({ userId: user._id }),
+        DigestRun.deleteMany({ userId: user._id }),
       ]);
       await Promise.allSettled(resumes.map((resume) => removeResumeFile(resume.storedFileName)));
       res.json({ message: 'User removed' });

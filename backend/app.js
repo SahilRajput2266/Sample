@@ -22,6 +22,8 @@ import generatedDocumentRoutes from './routes/generated-document.routes.js';
 import automationRoutes from './routes/automation.routes.js';
 import automationAdminRoutes from './routes/automation-admin.routes.js';
 import testApplicationRoutes from './routes/test-application.routes.js';
+import notificationRoutes from './routes/notification.routes.js';
+import notificationAdminRoutes from './routes/notification-admin.routes.js';
 
 dotenv.config();
 
@@ -49,7 +51,9 @@ app.use('/api/applications', protect, applicationRoutes);
 app.use('/api/ai', protect, aiRoutes);
 app.use('/api/generated-documents', protect, generatedDocumentRoutes);
 app.use('/api/automation', protect, automationRoutes);
+app.use('/api/notifications', protect, notificationRoutes);
 app.use('/api/admin/automation', protect, automationAdminRoutes);
+app.use('/api/admin/notifications', protect, notificationAdminRoutes);
 
 if (process.env.AUTOMATION_TEST_FORM_ENABLED === 'true' && process.env.NODE_ENV !== 'production') app.use('/test-job-application', testApplicationRoutes);
 

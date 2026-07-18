@@ -43,6 +43,10 @@ import AutomationReview from './pages/automation/AutomationReview';
 import AutomationActionRequired from './pages/automation/AutomationActionRequired';
 import AutomationAnswers from './pages/automation/AutomationAnswers';
 import AutomationMonitoring from './pages/admin/AutomationMonitoring';
+import NotificationCenter from './pages/notifications/NotificationCenter';
+import NotificationPreferences from './pages/notifications/NotificationPreferences';
+import NotificationMonitoring from './pages/admin/NotificationMonitoring';
+import SchedulerMonitoring from './pages/admin/SchedulerMonitoring';
 
 function App() {
   return (
@@ -93,6 +97,8 @@ function App() {
             <Route path="/automation/runs/:id/review" element={<AutomationReview />} />
             <Route path="/automation/runs/:id/action-required" element={<AutomationActionRequired />} />
             <Route path="/automation/answers" element={<AutomationAnswers />} />
+            <Route path="/notifications" element={<NotificationCenter />} />
+            <Route path="/notifications/preferences" element={<NotificationPreferences />} />
           </Route>
 
           {/* Admin Routes */}
@@ -101,6 +107,8 @@ function App() {
             <Route path="/admin/users" element={<UsersList />} />
             <Route path="/admin/users/:id" element={<UserEdit />} />
             <Route path="/admin/automation" element={<AutomationMonitoring />} />
+            <Route path="/admin/notifications" element={<NotificationMonitoring />} />
+            <Route path="/admin/scheduler" element={<SchedulerMonitoring />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />

@@ -181,3 +181,9 @@ Use Redis, Node 20.19 or newer, a dedicated worker, Playwright Chromium system d
 ## Production deployment
 
 See [Production deployment](docs/production-deployment.md) for supported runtimes, Redis TLS, the dedicated worker, Playwright Linux dependencies, process limits, monitoring, backup, and rollback.
+
+## Milestone 7 notifications
+
+JobOrbit now supports owned in-app notifications, SMTP/console email delivery, PWA Web Push, quiet hours, notification preferences, daily/weekly digests, interview and follow-up reminders, scheduled job discovery settings, delivery tracking, retention cleanup, and admin monitoring.
+
+Local development defaults to the bounded in-process queue and console email provider. For production configure Redis, SMTP, and VAPID keys, then run the API and dedicated worker separately. See [Production deployment](docs/production-deployment.md).
