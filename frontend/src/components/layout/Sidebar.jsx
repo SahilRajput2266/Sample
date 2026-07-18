@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Users, Settings, X, UserRound, Sparkles, BriefcaseBusiness, GraduationCap, Award, Languages, FileText, Search, SlidersHorizontal, Bookmark, ClipboardList, Columns3, BarChart3, BrainCircuit, Bot } from 'lucide-react';
+import { LayoutDashboard, Users, Settings, X, UserRound, Sparkles, BriefcaseBusiness, GraduationCap, Award, Languages, FileText, Search, SlidersHorizontal, Bookmark, ClipboardList, Columns3, BarChart3, BrainCircuit, Bot, Bell } from 'lucide-react';
 import { AuthContext } from '../../context/AuthContext';
 import clsx from 'clsx';
 
@@ -24,9 +24,12 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     { to: '/profile/certifications', icon: <Award className="w-5 h-5" />, label: 'Certifications', show: user?.role === 'user' },
     { to: '/profile/languages', icon: <Languages className="w-5 h-5" />, label: 'Languages', show: user?.role === 'user' },
     { to: '/profile/resume', icon: <FileText className="w-5 h-5" />, label: 'Resumes', show: user?.role === 'user' },
+    { to: '/notifications', icon: <Bell className="w-5 h-5" />, label: 'Notifications', show: user?.role === 'user' },
     { to: '/settings', icon: <Settings className="w-5 h-5" />, label: 'Settings', show: user?.role === 'user' },
     { to: '/admin', icon: <Settings className="w-5 h-5" />, label: 'Admin Dashboard', show: user?.role === 'admin' },
     { to: '/admin/users', icon: <Users className="w-5 h-5" />, label: 'Manage Users', show: user?.role === 'admin' },
+    { to: '/admin/notifications', icon: <Bell className="w-5 h-5" />, label: 'Notification Monitor', show: user?.role === 'admin' },
+    { to: '/admin/scheduler', icon: <Bell className="w-5 h-5" />, label: 'Scheduler Monitor', show: user?.role === 'admin' },
     { to: '/admin/automation', icon: <Bot className="w-5 h-5" />, label: 'Automation Monitor', show: user?.role === 'admin' },
   ];
 

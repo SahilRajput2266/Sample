@@ -6,6 +6,7 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
+      workbox: { importScripts: ['push-handler.js'] },
       registerType: 'autoUpdate',
       devOptions: {
         enabled: true,

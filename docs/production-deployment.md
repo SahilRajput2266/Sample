@@ -63,3 +63,29 @@ Monitor API latency/errors, worker heartbeat and restarts, BullMQ waiting/active
 ## Backup, recovery, and rollback
 
 Use encrypted MongoDB snapshots plus point-in-time recovery and separately version application releases. Redis queue data is operational state, not the system of record; reconcile runs from MongoDB after Redis loss. Test restores regularly. Before deploy, back up MongoDB and retain the previous frontend/backend artifact and lockfiles. To roll back: stop intake, drain or pause workers, deploy the previous artifact, restore only when a schema change is incompatible, rebuild indexes if required, restart worker then API, and verify health/queue reconciliation. Never roll back by deleting automation collections.
+## Notifications and scheduling
+
+Use Redis 7+ for BullMQ and run `npm run worker` as a dedicated process. The worker handles both automation and notification queues; the API scheduler creates ID-only tasks and workers re-fetch MongoDB state. Without Redis, a bounded in-process development queue is used and queued work is lost on restart.
+
+For SMTP set `EMAIL_PROVIDER=smtp`, `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASS`, and `SMTP_FROM` using the deployment secret manager. Verify SMTP with a non-production recipient and `/api/notifications/test`; never log message bodies or credentials.
+
+Generate Web Push keys once:
+
+```bash
+cd backend
+npx web-push generate-vapid-keys
+```
+
+Store `VAPID_PRIVATE_KEY` only in the backend secret manager. Set the public key and an HTTPS `VAPID_SUBJECT`. Push requires HTTPS except localhost. Expired subscriptions are disabled and removed by retention cleanup.
+
+Useful checks:
+
+```bash
+redis-cli -u "$REDIS_URL" --tls PING
+pm2 start server.js --name joborbit-api --time
+pm2 start workers/automation.worker.entry.js --name joborbit-workers --time
+curl --fail -H "Authorization: Bearer $TOKEN" https://joborbit.example/api/notifications/unread-count
+curl --fail -H "Authorization: Bearer $ADMIN_TOKEN" https://joborbit.example/api/admin/notifications/stats
+```
+
+Monitor failed deliveries, queue depth, scheduler locks, stale scheduled tasks, worker restarts, SMTP rejection rates, push 404/410 responses, and empty digest volume. Troubleshooting starts with Redis connectivity, worker logs, user channel/category preferences, quiet hours and timezone, then provider configuration.

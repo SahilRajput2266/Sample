@@ -80,3 +80,5 @@ users, profiles, skills, experiences, educations, certifications, languages, res
 - **2026-07-18** — Full read-only audit performed; this file created. No code changes yet. All checkboxes above unfixed.
 
 - **2026-07-18** — Milestone 6 safe automation added: six automation collections, Playwright safe adapters, BullMQ/fallback queue, authenticated APIs, cleanup, responsive frontend, and local-only submit fixture.
+
+- **2026-07-18** — Milestone 7 notifications, preferences, email/Web Push delivery, digests, reminders, scheduler, cleanup, admin monitoring, frontend notification center, and tests added. External automation submission boundaries remain unchanged.
