@@ -1,0 +1,14 @@
+import express from 'express';
+import rateLimit from 'express-rate-limit';
+import { analyzeJobFit, generateCoverLetter, generateFollowUpEmail, generateInterviewQuestions, generateResumeSummary, getAILogs, optimizeResume } from '../controllers/ai.controller.js';
+import { validateCoverLetter, validateFollowUp, validateInterviewQuestions, validateJobFit, validateResumeOptimization, validateResumeSummary } from '../validators/ai.validators.js';
+const router = express.Router();
+const aiLimiter = rateLimit({ windowMs: 15 * 60 * 1000, limit: 20, standardHeaders: true, legacyHeaders: false, message: { message: 'AI generation rate limit reached; try again later' } });
+router.post('/cover-letter/generate', aiLimiter, validateCoverLetter, generateCoverLetter);
+router.post('/resume-summary/generate', aiLimiter, validateResumeSummary, generateResumeSummary);
+router.post('/resume/optimize', aiLimiter, validateResumeOptimization, optimizeResume);
+router.post('/job-fit/analyze', aiLimiter, validateJobFit, analyzeJobFit);
+router.post('/interview-questions/generate', aiLimiter, validateInterviewQuestions, generateInterviewQuestions);
+router.post('/follow-up-email/generate', aiLimiter, validateFollowUp, generateFollowUpEmail);
+router.get('/logs', getAILogs);
+export default router;

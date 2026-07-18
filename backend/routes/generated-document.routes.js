@@ -1,0 +1,10 @@
+import express from 'express';
+import { attachGeneratedDocument, deleteGeneratedDocument, getGeneratedDocument, listGeneratedDocuments, updateGeneratedDocument } from '../controllers/generated-document.controller.js';
+import { validateGeneratedDocumentUpdate } from '../validators/ai.validators.js';
+const router = express.Router();
+router.get('/', listGeneratedDocuments);
+router.get('/:id', getGeneratedDocument);
+router.put('/:id', validateGeneratedDocumentUpdate, updateGeneratedDocument);
+router.delete('/:id', deleteGeneratedDocument);
+router.post('/:id/attach-to-application', attachGeneratedDocument);
+export default router;

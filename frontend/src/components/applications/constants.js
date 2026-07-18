@@ -1,0 +1,2 @@
+export const applicationStatuses = ['saved', 'started', 'applied', 'screening', 'interview', 'assignment', 'offer', 'rejected', 'withdrawn'];
+export const statusColors = { saved: 'bg-slate-100 text-slate-700', started: 'bg-blue-100 text-blue-700', applied: 'bg-indigo-100 text-indigo-700', screening: 'bg-cyan-100 text-cyan-700', interview: 'bg-violet-100 text-violet-700', assignment: 'bg-amber-100 text-amber-700', offer: 'bg-emerald-100 text-emerald-700', rejected: 'bg-red-100 text-red-700', withdrawn: 'bg-gray-200 text-gray-700' };

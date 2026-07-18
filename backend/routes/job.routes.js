@@ -1,0 +1,15 @@
+import express from 'express';
+import { deleteJob, fetchJobs, getJob, getJobActivity, getJobDashboardStats, listJobs, listSavedJobs, saveJob, unsaveJob, updateJobStatus } from '../controllers/job.controller.js';
+import { validateJobQuery, validateJobStatus } from '../validators/job.validators.js';
+const router = express.Router();
+router.get('/', validateJobQuery, listJobs);
+router.post('/fetch', fetchJobs);
+router.get('/saved', listSavedJobs);
+router.get('/stats/dashboard', getJobDashboardStats);
+router.get('/:id/activity', getJobActivity);
+router.post('/:id/save', saveJob);
+router.delete('/:id/save', unsaveJob);
+router.patch('/:id/status', validateJobStatus, updateJobStatus);
+router.get('/:id', getJob);
+router.delete('/:id', deleteJob);
+export default router;

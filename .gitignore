@@ -1,0 +1,8 @@
+**/node_modules/
+**/dist/
+**/dev-dist/
+.claude/settings.local.json
+backend/.env
+frontend/.env
+backend/uploads/resumes/*
+!backend/uploads/resumes/.gitkeep

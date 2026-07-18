@@ -1,0 +1,36 @@
+const estimateTokens = (value) => Math.ceil(JSON.stringify(value).length / 4);
+const unique = (values) => [...new Set(values.filter(Boolean))];
+const candidateName = (context) => context.user?.fullName || [context.profile?.firstName, context.profile?.lastName].filter(Boolean).join(' ') || 'Candidate';
+const target = (context) => ({ role: context.job?.title || context.application?.role || 'the role', company: context.job?.company || context.application?.company || 'the company' });
+const skillNames = (context) => unique(context.skills?.map((skill) => skill.skillName) || []);
+const jobSkills = (context) => context.job?.skills || [];
+const missingSkills = (context) => jobSkills(context).filter((skill) => !skillNames(context).some((owned) => owned.toLowerCase() === skill.toLowerCase()));
+const matchingSkills = (context, skills) => skills.filter((skill) => jobSkills(context).some((required) => required.toLowerCase() === skill.toLowerCase()));
+
+export const generateWithTemplate = (feature, context, options = {}) => {
+  const name = candidateName(context), { role, company } = target(context), skills = skillNames(context), missing = missingSkills(context);
+  let structured;
+  if (feature === 'cover_letter') {
+    const toneLead = options.tone === 'friendly' ? 'I am excited to apply' : options.tone === 'confident' ? 'I am confident that my background aligns strongly' : 'I am writing to apply';
+    const detail = options.length === 'short' ? '' : `\n\nMy experience includes ${context.experiences?.slice(0, 2).map((item) => `${item.designation} at ${item.companyName}`).join(' and ') || 'building relevant professional capabilities'}. I would welcome the opportunity to apply this experience to the responsibilities described for this position.`;
+    structured = { content: `Dear Hiring Team at ${company},\n\n${toneLead} for the ${role} position. My background in ${skills.slice(0, 5).join(', ') || 'the relevant professional domain'} aligns with the role's focus, and I am particularly interested in contributing to ${company}.\n\n${context.profile?.summary || `I bring practical experience relevant to ${role}, supported by a record of continuous learning and collaborative delivery.`}${detail}\n\nThank you for considering my application. I would value the opportunity to discuss how my experience can support your team.\n\nSincerely,\n${name}` };
+  } else if (feature === 'resume_summary') {
+    const targetSentence = jobSkills(context).length ? ` Targeting ${role} opportunities with emphasis on ${jobSkills(context).slice(0, 4).join(', ')}.` : '';
+    structured = { summary: `${context.profile?.currentDesignation || 'Professional'} with ${context.profile?.totalExperience || 0}+ years of experience and strengths in ${skills.slice(0, 6).join(', ') || 'cross-functional delivery'}. ${context.profile?.summary || 'Experienced in delivering reliable outcomes, collaborating with stakeholders, and adapting skills to business needs.'}${targetSentence}` };
+  } else if (feature === 'resume_optimization') {
+    const totalRequired = jobSkills(context).length || 1;
+    const before = Math.max(0, Math.min(100, context.job?.matchScore || Math.round(((totalRequired - missing.length) / totalRequired) * 100)));
+    structured = { scoreBefore: before, scoreAfter: Math.min(100, before + Math.min(25, missing.length * 5 + 10)), missingKeywords: missing, suggestions: ['Use the target role title naturally in the summary', 'Prioritize experience bullets that demonstrate required skills', 'Add measurable outcomes only where verified', 'Keep formatting simple and ATS-readable'], improvedSummary: `${context.profile?.currentDesignation || 'Professional'} with ${context.profile?.totalExperience || 0}+ years of experience in ${skills.slice(0, 6).join(', ') || 'relevant delivery'}, seeking to contribute as ${role} at ${company}.`, improvedSkills: unique([...skills, ...jobSkills(context).filter((skill) => !missing.includes(skill))]), improvedExperienceBullets: (context.experiences || []).slice(0, 4).map((item) => `Delivered ${item.designation} responsibilities at ${item.companyName}${item.technologies?.length ? ` using ${item.technologies.join(', ')}` : ''}, with focus on reliable execution and collaboration.`) };
+  } else if (feature === 'job_fit_analysis') {
+    const score = context.job?.matchScore || 0;
+    const matched = matchingSkills(context, skills);
+    structured = { overallFitScore: score, strengths: unique([context.job?.matchReasons?.[0], matched.length ? `Relevant skills include ${matched.join(', ')}` : '', context.profile?.totalExperience ? `${context.profile.totalExperience} years of stated experience` : '']), weaknesses: missing.length ? [`The profile does not currently show ${missing.join(', ')}`] : [], missingSkills: missing, verdict: score >= 70 ? `This appears to be a strong fit for ${name}.` : score >= 45 ? 'This is a plausible fit, with preparation needed before applying.' : 'This role currently has material gaps against the profile.', suggestions: ['Address missing skills honestly through learning or adjacent experience', 'Tailor the resume summary to the role', 'Prepare examples tied to the listed responsibilities'] };
+  } else if (feature === 'interview_questions') {
+    const technicalTopics = (jobSkills(context).length ? jobSkills(context) : skills).slice(0, 5);
+    structured = { hrQuestions: [{ question: `Why are you interested in the ${role} role at ${company}?`, suggestedAnswer: `Connect your verified experience and goals to the role and ${company}.` }, { question: 'Tell me about a professional challenge you handled.', suggestedAnswer: 'Use a concise situation, task, action, and result structure without inventing metrics.' }], technicalQuestions: technicalTopics.map((skill) => ({ question: `How have you applied ${skill} in a production or project setting?`, suggestedAnswer: 'Use a specific example from your experience, explain your decisions, and describe the verified outcome.' })), roleQuestions: [{ question: `How would you approach your first 90 days as ${role}?`, suggestedAnswer: 'Discuss learning the domain, aligning with stakeholders, delivering an early scoped win, and measuring progress.' }], companyPreparation: [`Review ${company}'s public products, customers, and recent updates.`, `Prepare questions about the ${role} team's priorities and success measures.`, 'Map two verified experience examples to the job responsibilities.'] };
+  } else if (feature === 'follow_up_email') {
+    const typeText = options.followUpType === 'after_interview' ? 'Thank you for the opportunity to interview' : options.followUpType === 'reminder' ? 'I wanted to follow up regarding my application' : 'I am following up on my recent application';
+    structured = { subject: `Follow-up: ${role} application`, content: `Dear ${context.application?.contactPerson || 'Hiring Team'},\n\n${typeText} for the ${role} position at ${company}. I remain interested in the opportunity and would appreciate any update you can share about the next steps.\n\nPlease let me know if I can provide any additional information.\n\nBest regards,\n${name}` };
+  } else throw new Error('Unsupported AI feature');
+  return { structured, inputTokens: estimateTokens({ context, options }), outputTokens: estimateTokens(structured) };
+};

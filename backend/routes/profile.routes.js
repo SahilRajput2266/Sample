@@ -1,0 +1,1 @@
+import express from'express';import{getProfile,updateProfile,getProfileStats}from'../controllers/profile.controller.js';import{validateProfile}from'../validators/profile.validators.js';const r=express.Router();r.get('/',getProfile);r.put('/',validateProfile,updateProfile);r.get('/stats',getProfileStats);export default r;

@@ -1,0 +1,1 @@
+import express from'express';import{validateSkill as v}from'../validators/profile.validators.js';import{getSkills as g,createSkill as c,updateSkill as u,deleteSkill as d}from'../controllers/skill.controller.js';const r=express.Router();r.route('/skills').get(g).post(v,c);r.route('/skills/:id').put(v,u).delete(d);export default r;

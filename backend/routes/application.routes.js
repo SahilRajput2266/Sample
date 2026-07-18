@@ -1,0 +1,27 @@
+import express from 'express';
+import { createApplication, createApplicationFromJob, deleteApplication, getApplication, getApplicationAnalytics, listApplications, updateApplication, updateApplicationStatus } from '../controllers/application.controller.js';
+import { addDocument, addInterview, addNote, deleteDocument, deleteInterview, deleteNote, getActivities, getDocuments, getInterviews, getNotes, updateInterview, updateNote } from '../controllers/application-resource.controller.js';
+import { validateApplication, validateApplicationQuery, validateApplicationStatus, validateApplicationUpdate, validateDocument, validateInterview, validateNote } from '../validators/application.validators.js';
+
+const router = express.Router();
+router.get('/', validateApplicationQuery, listApplications);
+router.post('/', validateApplication, createApplication);
+router.post('/from-job/:jobId', createApplicationFromJob);
+router.get('/analytics/summary', getApplicationAnalytics);
+router.put('/notes/:noteId', validateNote, updateNote);
+router.delete('/notes/:noteId', deleteNote);
+router.put('/interviews/:interviewId', validateInterview, updateInterview);
+router.delete('/interviews/:interviewId', deleteInterview);
+router.delete('/documents/:documentId', deleteDocument);
+router.get('/:id/notes', getNotes);
+router.post('/:id/notes', validateNote, addNote);
+router.get('/:id/interviews', getInterviews);
+router.post('/:id/interviews', validateInterview, addInterview);
+router.get('/:id/documents', getDocuments);
+router.post('/:id/documents', validateDocument, addDocument);
+router.get('/:id/activity', getActivities);
+router.patch('/:id/status', validateApplicationStatus, updateApplicationStatus);
+router.get('/:id', getApplication);
+router.put('/:id', validateApplicationUpdate, updateApplication);
+router.delete('/:id', deleteApplication);
+export default router;
