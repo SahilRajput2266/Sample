@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Users, Settings, X, UserRound, Sparkles, BriefcaseBusiness, GraduationCap, Award, Languages, FileText, Search, SlidersHorizontal, Bookmark, ClipboardList, Columns3, BarChart3, BrainCircuit } from 'lucide-react';
+import { LayoutDashboard, Users, Settings, X, UserRound, Sparkles, BriefcaseBusiness, GraduationCap, Award, Languages, FileText, Search, SlidersHorizontal, Bookmark, ClipboardList, Columns3, BarChart3, BrainCircuit, Bot } from 'lucide-react';
 import { AuthContext } from '../../context/AuthContext';
 import clsx from 'clsx';
 
@@ -16,6 +16,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     { to: '/applications/kanban', icon: <Columns3 className="w-5 h-5" />, label: 'Application Board', show: user?.role === 'user' },
     { to: '/applications/analytics', icon: <BarChart3 className="w-5 h-5" />, label: 'ATS Analytics', show: user?.role === 'user' },
     { to: '/ai', icon: <BrainCircuit className="w-5 h-5" />, label: 'AI Tools', show: user?.role === 'user' },
+    { to: '/automation', icon: <Bot className="w-5 h-5" />, label: 'Safe Auto-Apply', show: user?.role === 'user' },
     { to: '/profile', icon: <UserRound className="w-5 h-5" />, label: 'Profile', show: user?.role === 'user' },
     { to: '/profile/skills', icon: <Sparkles className="w-5 h-5" />, label: 'Skills', show: user?.role === 'user' },
     { to: '/profile/experience', icon: <BriefcaseBusiness className="w-5 h-5" />, label: 'Experience', show: user?.role === 'user' },
@@ -26,6 +27,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     { to: '/settings', icon: <Settings className="w-5 h-5" />, label: 'Settings', show: user?.role === 'user' },
     { to: '/admin', icon: <Settings className="w-5 h-5" />, label: 'Admin Dashboard', show: user?.role === 'admin' },
     { to: '/admin/users', icon: <Users className="w-5 h-5" />, label: 'Manage Users', show: user?.role === 'admin' },
+    { to: '/admin/automation', icon: <Bot className="w-5 h-5" />, label: 'Automation Monitor', show: user?.role === 'admin' },
   ];
 
   return (

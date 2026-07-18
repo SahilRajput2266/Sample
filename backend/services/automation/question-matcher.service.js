@@ -1,0 +1,3 @@
+const aliases=[[/node\.?js|node js/g,'node'],[/years? of experience|experience with|experience/g,'experience'],[/e-?mail/g,'email'],[/telephone|mobile/g,'phone']];
+export const normalizeQuestion=(v)=>{const n=aliases.reduce((s,[r,x])=>s.replace(r,x),String(v||'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()).replace(/\\b(with|how many|do you have)\\b/g,'').replace(/\\s+/g,' ').trim();return n.includes('node')&&n.includes('experience')?'node experience':n};
+export const matchQuestion=(question,answers=[])=>{const n=normalizeQuestion(question);return answers.find(a=>a.normalizedQuestion===n)||answers.find(a=>n.includes(a.normalizedQuestion)||a.normalizedQuestion.includes(n))||null};

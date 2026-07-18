@@ -1,0 +1,1 @@
+import GenericFormAdapter from'./generic-form.adapter.js';export default class AssistedAdapter extends GenericFormAdapter{constructor(){super('assisted-navigation')}async run(ctx){const result=await super.run({...ctx,allowSubmit:false});return{...result,status:result.status==='action_required'?'action_required':'awaiting_review',canSubmit:false}}}

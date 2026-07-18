@@ -1,0 +1,1 @@
+import GenericFormAdapter from'./generic-form.adapter.js';export default class CompanyCareerAdapter extends GenericFormAdapter{constructor(){super('company-career')}supports({source}){return source==='company-career'}}

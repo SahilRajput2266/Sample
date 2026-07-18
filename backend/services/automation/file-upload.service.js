@@ -1,0 +1,4 @@
+import fs from'node:fs/promises';import path from'node:path';
+const allowed=new Set(['application/pdf','application/msword','application/vnd.openxmlformats-officedocument.wordprocessingml.document','text/plain']);
+export const validateOwnedFile=async(file,root)=>{if(!file||!allowed.has(file.mimeType))throw Object.assign(new Error('Unsupported document type'),{code:'validation_error'});const base=path.resolve(root),target=path.resolve(base,file.storedFileName||'');if(!target.startsWith(base+path.sep))throw Object.assign(new Error('Unsafe document path'),{code:'validation_error'});const stat=await fs.stat(target);if(!stat.isFile()||stat.size<1||stat.size>10*1024*1024)throw Object.assign(new Error('Invalid document file'),{code:'validation_error'});return target};
+export const uploadOwnedFile=async(page,selector,file,root)=>page.locator(selector).setInputFiles(await validateOwnedFile(file,root));

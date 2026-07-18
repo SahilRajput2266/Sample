@@ -78,3 +78,5 @@ users, profiles, skills, experiences, educations, certifications, languages, res
 ## 6. Changelog (newest first — append here after every change)
 
 - **2026-07-18** — Full read-only audit performed; this file created. No code changes yet. All checkboxes above unfixed.
+
+- **2026-07-18** — Milestone 6 safe automation added: six automation collections, Playwright safe adapters, BullMQ/fallback queue, authenticated APIs, cleanup, responsive frontend, and local-only submit fixture.

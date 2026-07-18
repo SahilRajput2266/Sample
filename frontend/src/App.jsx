@@ -34,6 +34,15 @@ import AIToolPage from './pages/AIToolPage';
 import GeneratedDocuments from './pages/GeneratedDocuments';
 import GeneratedDocumentDetail from './pages/GeneratedDocumentDetail';
 import NotFound from './pages/NotFound';
+import AutomationDashboard from './pages/automation/AutomationDashboard';
+import AutomationProfile from './pages/automation/AutomationProfile';
+import AutomationHistory from './pages/automation/AutomationHistory';
+import StartAutomation from './pages/automation/StartAutomation';
+import AutomationRunDetail from './pages/automation/AutomationRunDetail';
+import AutomationReview from './pages/automation/AutomationReview';
+import AutomationActionRequired from './pages/automation/AutomationActionRequired';
+import AutomationAnswers from './pages/automation/AutomationAnswers';
+import AutomationMonitoring from './pages/admin/AutomationMonitoring';
 
 function App() {
   return (
@@ -76,6 +85,14 @@ function App() {
             <Route path="/ai/follow-up" element={<AIToolPage tool="followUp" />} />
             <Route path="/generated-documents" element={<GeneratedDocuments />} />
             <Route path="/generated-documents/:id" element={<GeneratedDocumentDetail />} />
+            <Route path="/automation" element={<AutomationDashboard />} />
+            <Route path="/automation/profile" element={<AutomationProfile />} />
+            <Route path="/automation/runs" element={<AutomationHistory />} />
+            <Route path="/automation/start/:applicationId" element={<StartAutomation />} />
+            <Route path="/automation/runs/:id" element={<AutomationRunDetail />} />
+            <Route path="/automation/runs/:id/review" element={<AutomationReview />} />
+            <Route path="/automation/runs/:id/action-required" element={<AutomationActionRequired />} />
+            <Route path="/automation/answers" element={<AutomationAnswers />} />
           </Route>
 
           {/* Admin Routes */}
@@ -83,6 +100,7 @@ function App() {
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/users" element={<UsersList />} />
             <Route path="/admin/users/:id" element={<UserEdit />} />
+            <Route path="/admin/automation" element={<AutomationMonitoring />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />

@@ -1,0 +1,4 @@
+import mongoose from 'mongoose';
+export const AUTOMATION_ANSWER_TYPES=['text','number','boolean','select','multi_select','date','file','sensitive'];
+const schema=new mongoose.Schema({userId:{type:mongoose.Schema.Types.ObjectId,ref:'User',required:true,index:true},questionKey:{type:String,trim:true,default:''},questionText:{type:String,required:true,trim:true},normalizedQuestion:{type:String,required:true,trim:true,lowercase:true},answerType:{type:String,enum:AUTOMATION_ANSWER_TYPES,required:true},answer:{type:mongoose.Schema.Types.Mixed,required:true,select:false},source:{type:String,enum:['user','profile','saved'],default:'user'},usageCount:{type:Number,min:0,default:0},lastUsedAt:Date,requiresConfirmation:{type:Boolean,default:false}},{timestamps:true});schema.index({userId:1,normalizedQuestion:1,answerType:1},{unique:true});schema.index({userId:1,lastUsedAt:-1});
+export default mongoose.model('AutomationAnswer',schema);

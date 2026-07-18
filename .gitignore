@@ -6,3 +6,8 @@ backend/.env
 frontend/.env
 backend/uploads/resumes/*
 !backend/uploads/resumes/.gitkeep
+
+backend/uploads/automation-screenshots/*
+!backend/uploads/automation-screenshots/.gitkeep
+playwright-report/
+test-results/

@@ -1,0 +1,1 @@
+export default class BaseAdapter{constructor(name){this.name=name}supports(){return false}async run(){throw new Error('Adapter must implement run')}}

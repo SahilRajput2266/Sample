@@ -1,0 +1,1 @@
+import React from'react';export default function SafetyNotice(){return <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">JobOrbit will not bypass captcha, OTP, login security, anti-bot systems, or website restrictions. External applications always require review or manual completion.</div>}

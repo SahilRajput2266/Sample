@@ -1,0 +1,4 @@
+import mongoose from 'mongoose';
+export const CONSENT_TYPES=['start_automation','use_profile_data','use_resume','use_cover_letter','review_submission','final_submit','save_answers'];
+const schema=new mongoose.Schema({userId:{type:mongoose.Schema.Types.ObjectId,ref:'User',required:true,index:true},automationRunId:{type:mongoose.Schema.Types.ObjectId,ref:'AutomationRun',index:true},consentType:{type:String,enum:CONSENT_TYPES,required:true},consentGiven:{type:Boolean,required:true},consentText:{type:String,required:true},consentVersion:{type:String,required:true},ipAddress:{type:String,select:false,default:''},userAgent:{type:String,select:false,default:''}},{timestamps:{createdAt:true,updatedAt:false}});schema.index({userId:1,automationRunId:1,createdAt:-1});schema.index({automationRunId:1,consentType:1,createdAt:-1});
+export default mongoose.model('AutomationConsent',schema);

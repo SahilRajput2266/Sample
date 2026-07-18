@@ -21,6 +21,8 @@ const schema = new mongoose.Schema({
   contactPerson: { type: String, trim: true, maxlength: 160, default: '' },
   contactEmail: { type: String, trim: true, lowercase: true, default: '', match: [/^$|^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Contact email is invalid'] },
   notes: { type: String, trim: true, maxlength: 5000, default: '' },
+  automationRunId: { type: mongoose.Schema.Types.ObjectId, ref: 'AutomationRun', index: true },
+  origin: { type: String, enum: ['manual', 'tracked_job', 'automation_assisted'], default: 'manual' },
 }, { timestamps: true });
 
 schema.index({ userId: 1, jobId: 1 }, { unique: true, partialFilterExpression: { jobId: { $type: 'objectId' } } });

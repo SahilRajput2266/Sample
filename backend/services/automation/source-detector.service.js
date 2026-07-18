@@ -1,0 +1,1 @@
+export const detectSource=applyUrl=>{const host=new URL(applyUrl).hostname.toLowerCase();if(host.includes('greenhouse'))return'greenhouse';if(host.includes('lever.co'))return'lever';if(host.includes('workable'))return'workable';if(['localhost','127.0.0.1'].includes(host))return'local-test';return'company-career'};

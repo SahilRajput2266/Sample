@@ -1,0 +1,1 @@
+import React from'react';export default function AutomationProgress({value=0}){return <div><div className="mb-1 flex justify-between text-sm"><span>Progress</span><strong>{value}%</strong></div><div className="h-2 overflow-hidden rounded bg-slate-200"><div className="h-full bg-indigo-600 transition-all" style={{width:`${value}%`}}/></div></div>}

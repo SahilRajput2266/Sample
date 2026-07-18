@@ -1,0 +1,3 @@
+const partial=(v,a=2,b=2)=>{const s=String(v??'');return s.length<=a+b?'*'.repeat(s.length):`${s.slice(0,a)}${'*'.repeat(Math.min(8,s.length-a-b))}${s.slice(-b)}`};
+export const maskValue=(value,type='text')=>{if(value===undefined||value===null)return'';if(type==='email'){const[a,d='']=String(value).split('@');return`${partial(a,1,0)}@${partial(d,1,2)}`}if(['phone','salary','sensitive'].includes(type))return partial(value,0,2);return partial(value)};
+export const sanitizeMetadata=(input={})=>Object.fromEntries(Object.entries(input).filter(([k])=>!/(answer|password|token|cookie|authorization|salary|phone|email)/i.test(k)).map(([k,v])=>[k,typeof v==='string'?v.slice(0,500):v]));

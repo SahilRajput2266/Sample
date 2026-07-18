@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const schema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, index: true },
   jobId: { type: mongoose.Schema.Types.ObjectId, ref: 'Job', required: true, index: true },
-  action: { type: String, enum: ['fetched', 'viewed', 'saved', 'ignored', 'status_changed', 'apply_started'], required: true },
+  action: { type: String, enum: ['fetched', 'viewed', 'saved', 'ignored', 'status_changed', 'apply_started', 'automation_queued', 'automation_started', 'automation_action_required', 'automation_submitted'], required: true },
   oldStatus: { type: String, default: '' },
   newStatus: { type: String, default: '' },
   metadata: { type: mongoose.Schema.Types.Mixed, default: {} },

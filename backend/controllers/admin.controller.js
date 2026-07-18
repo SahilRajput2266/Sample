@@ -19,6 +19,12 @@ import ApplicationActivity from '../models/ApplicationActivity.js';
 import GeneratedDocument from '../models/GeneratedDocument.js';
 import AIRequest from '../models/AIRequest.js';
 import ResumeOptimization from '../models/ResumeOptimization.js';
+import AutomationProfile from '../models/AutomationProfile.js';
+import AutomationRun from '../models/AutomationRun.js';
+import AutomationStep from '../models/AutomationStep.js';
+import AutomationAnswer from '../models/AutomationAnswer.js';
+import AutomationScreenshot from '../models/AutomationScreenshot.js';
+import AutomationConsent from '../models/AutomationConsent.js';
 import { normalizeEmail, emailLookupFilter } from '../utils/email.js';
 
 // True when `user` is the only remaining active admin account.
@@ -240,6 +246,12 @@ export const deleteUser = async (req, res, next) => {
         GeneratedDocument.deleteMany({ userId: user._id }),
         AIRequest.deleteMany({ userId: user._id }),
         ResumeOptimization.deleteMany({ userId: user._id }),
+        AutomationProfile.deleteMany({ userId: user._id }),
+        AutomationRun.deleteMany({ userId: user._id }),
+        AutomationStep.deleteMany({ userId: user._id }),
+        AutomationAnswer.deleteMany({ userId: user._id }),
+        AutomationScreenshot.deleteMany({ userId: user._id }),
+        AutomationConsent.deleteMany({ userId: user._id }),
       ]);
       await Promise.allSettled(resumes.map((resume) => removeResumeFile(resume.storedFileName)));
       res.json({ message: 'User removed' });

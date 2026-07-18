@@ -1,0 +1,1 @@
+import GenericFormAdapter from'./generic-form.adapter.js';export default class LocalTestAdapter extends GenericFormAdapter{constructor(){super('local-test')}supports({source}){return source==='local-test'}async run(ctx){return super.run({...ctx,allowSubmit:true})}}

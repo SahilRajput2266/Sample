@@ -3,12 +3,15 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "engines": {
+    "node": ">=20.19.0"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "test": "node --test tests/phase2.frontend.test.js"
+    "test": "node --test tests/phase2.frontend.test.js && node --test tests/automation.frontend.test.js"
   },
   "dependencies": {
     "axios": "^1.18.1",

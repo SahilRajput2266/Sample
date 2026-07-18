@@ -1,0 +1,3 @@
+import mongoose from 'mongoose';
+const schema=new mongoose.Schema({userId:{type:mongoose.Schema.Types.ObjectId,ref:'User',required:true,index:true},automationRunId:{type:mongoose.Schema.Types.ObjectId,ref:'AutomationRun',required:true,index:true},stepId:{type:mongoose.Schema.Types.ObjectId,ref:'AutomationStep'},fileName:{type:String,required:true},filePath:{type:String,required:true,select:false},pageUrl:{type:String,default:''},type:{type:String,enum:['progress','review','error','action_required','final'],required:true}},{timestamps:{createdAt:true,updatedAt:false}});schema.index({userId:1,automationRunId:1,createdAt:1});schema.index({createdAt:1});
+export default mongoose.model('AutomationScreenshot',schema);

@@ -1,0 +1,15 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import os from 'node:os';
+import path from 'node:path';
+import {installNavigationGuard, isPublicAddress, validateAutomationUrl} from '../services/automation/url-security.service.js';
+import {resolvePrivateScreenshot} from '../services/automation/screenshot-storage.service.js';
+import {redisOptions} from '../queues/redis-connection.js';
+
+const blocked=['127.0.0.1','0.0.0.0','10.0.0.1','172.16.0.1','192.168.1.1','169.254.1.1','::1','fc00::1','fe80::1','224.0.0.1','255.255.255.255'];
+test('all private, local, link-local, multicast and reserved address classes are blocked',()=>{for(const address of blocked)assert.equal(isPublicAddress(address),false,address)});
+test('internal names, credentials and unsupported protocols are blocked',async()=>{for(const url of ['http://localhost/x','http://service.internal/x','http://user:pass@example.com','file:///etc/passwd','ftp://example.com/x'])await assert.rejects(()=>validateAutomationUrl(url),/private|unsafe/i)});
+test('navigation guard revalidates redirect destinations and subframes but not assets',async()=>{let handler;const page={route:async(_pattern,fn)=>{handler=fn}};await installNavigationGuard(page,{resolver:async host=>[{address:host==='private.example'?'10.0.0.1':'93.184.216.34'}]});let action='';await handler({request:()=>({isNavigationRequest:()=>true,url:()=> 'https://private.example/redirect'}),abort:async()=>{action='abort'},continue:async()=>{action='continue'}});assert.equal(action,'abort');await handler({request:()=>({isNavigationRequest:()=>false,url:()=> 'https://private.example/image.png'}),abort:async()=>{action='abort'},continue:async()=>{action='asset'}});assert.equal(action,'asset')});
+test('private screenshot resolver blocks traversal and accepts private PNG files',async()=>{const root=await fs.mkdtemp(path.join(os.tmpdir(),'joborbit-shots-'));const runDir=path.join(root,'run');await fs.mkdir(runDir);await fs.writeFile(path.join(runDir,'safe.png'),'png',{mode:0o600});assert.equal(await resolvePrivateScreenshot(root,'run/safe.png'),await fs.realpath(path.join(runDir,'safe.png')));await assert.rejects(()=>resolvePrivateScreenshot(root,'../outside.png'),/invalid/i);await assert.rejects(()=>resolvePrivateScreenshot(root,'run/safe.txt'),/invalid/i);await fs.rm(root,{recursive:true,force:true})});
+test('Redis TLS options verify certificates by default',()=>{const before={url:process.env.REDIS_URL,tls:process.env.REDIS_TLS,reject:process.env.REDIS_TLS_REJECT_UNAUTHORIZED};process.env.REDIS_URL='rediss://cache.example:6380';process.env.REDIS_TLS='true';delete process.env.REDIS_TLS_REJECT_UNAUTHORIZED;const options=redisOptions();assert.equal(options.tls.serverName,'cache.example');assert.equal(options.tls.rejectUnauthorized,true);for(const [key,value] of Object.entries(before)){const envKey={url:'REDIS_URL',tls:'REDIS_TLS',reject:'REDIS_TLS_REJECT_UNAUTHORIZED'}[key];if(value===undefined)delete process.env[envKey];else process.env[envKey]=value}});

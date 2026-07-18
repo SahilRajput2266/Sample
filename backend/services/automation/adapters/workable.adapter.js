@@ -1,0 +1,1 @@
+import GenericFormAdapter from'./generic-form.adapter.js';export default class Adapter extends GenericFormAdapter{constructor(){super('workable')}supports({source,applyUrl}){return source==='workable'||String(applyUrl).includes('workable')}}

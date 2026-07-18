@@ -1,0 +1,1 @@
+import React from'react';import{statusTone}from'./constants';export default function AutomationStatusBadge({status}){return <span className={`badge ${statusTone[status]||'bg-slate-100 text-slate-700'}`}>{String(status||'unknown').replaceAll('_',' ')}</span>}

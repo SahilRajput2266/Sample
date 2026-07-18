@@ -132,3 +132,52 @@ With MongoDB and the API running, profile endpoints are available under `/api/pr
 
 ---
 *Note: Auto-apply automation, browser extensions, subscriptions, payments, recruiter dashboards, and mobile apps are planned for future milestones.*
+
+## Milestone 6 — Safe Auto-Apply Automation
+
+JobOrbit supports assisted application preparation, review-before-submit, action-required pauses, saved answers, audit steps, screenshots, and admin monitoring. Real external job platforms are never submitted automatically: supported adapters may navigate and prefill, then stop for review or manual completion. Captcha, OTP, login, anti-bot, and restricted flows always pause.
+
+### Install and run
+
+```bash
+cd backend
+npm install
+npx playwright install chromium
+npm run dev
+```
+
+For production queue processing, configure Redis and run the worker separately:
+
+```bash
+cd backend
+npm run worker
+```
+
+When `REDIS_URL` is empty, local development uses a bounded in-process queue. It is process-local and jobs do not survive restarts. Redis is required for durable production queueing.
+
+Frontend:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+### Local test application form
+
+Set `AUTOMATION_TEST_FORM_ENABLED=true` with a non-production `NODE_ENV`, then open:
+
+`http://localhost:5000/test-job-application`
+
+This is the only form on which automated final submission is permitted. It never sends data to a third party and is unavailable in production.
+
+### Safety and supported adapters
+
+Adapters: generic forms, company career pages, Greenhouse, Lever, Workable, assisted navigation, and the local test form. External adapters stop before final submit. No stealth plugins, proxy rotation, fingerprint spoofing, third-party password storage, persistent cookies, captcha solving, OTP bypass, or login bypass are implemented.
+
+### Production considerations
+
+Use Redis, Node 20.19 or newer, a dedicated worker, Playwright Chromium system dependencies, restricted screenshot storage, HTTPS, and monitored cleanup jobs. Keep `AUTOMATION_AUTO_SUBMIT_ENABLED=false`. Server-hosted browser sessions and changing third-party markup mean external automation remains assisted and is not guaranteed for every site.
+## Production deployment
+
+See [Production deployment](docs/production-deployment.md) for supported runtimes, Redis TLS, the dedicated worker, Playwright Linux dependencies, process limits, monitoring, backup, and rollback.

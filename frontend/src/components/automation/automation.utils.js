@@ -1,0 +1,1 @@
+import{terminalStatuses}from'./constants.js';export const shouldPoll=status=>!terminalStatuses.includes(status);export const actionsFor=status=>({running:['pause','cancel'],paused:['resume','cancel'],action_required:['answer','resume','cancel'],awaiting_review:['review','cancel'],failed:['retry'],expired:['retry']}[status]||[]);

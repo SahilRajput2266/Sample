@@ -1,0 +1,3 @@
+import{normalizeQuestion,matchQuestion}from'./question-matcher.service.js';import{maskValue}from'./masking.service.js';
+export const planFieldAnswer=(field,answers)=>{const match=matchQuestion(field.label||field.name,answers);if(!match)return{field,status:field.required?'action_required':'skipped',confidence:'low'};return{field,answer:match.answer,masked:maskValue(match.answer,match.answerType),status:'ready',confidence:match.requiresConfirmation?'medium':'high',source:match.source}};
+export const fillPlannedField=async(page,plan)=>{const l=page.locator(plan.field.selector);if(plan.field.type==='checkbox')return l.setChecked(Boolean(plan.answer));if(plan.field.tag==='select')return l.selectOption(String(plan.answer));return l.fill(String(plan.answer))};
